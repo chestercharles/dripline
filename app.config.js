@@ -15,6 +15,9 @@ export default {
 		ios: {
 			supportsTablet: true,
 			bundleIdentifier: 'com.dripline.app',
+			infoPlist: {
+				ITSAppUsesNonExemptEncryption: false,
+			},
 		},
 		scheme: 'dripline',
 		plugins: [
@@ -24,8 +27,7 @@ export default {
 			[
 				'expo-camera',
 				{
-					cameraPermission:
-						'Allow Dripline to take photos of your plants.',
+					cameraPermission: 'Allow Dripline to take photos of your plants.',
 				},
 			],
 			[
@@ -36,5 +38,10 @@ export default {
 				},
 			],
 		],
+		extra: {
+			eas: {
+				projectId: 'db747518-585e-4fb4-b3fb-fd3a7610ae84',
+			},
+		},
 	},
 }
