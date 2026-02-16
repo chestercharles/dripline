@@ -1,27 +1,3 @@
-import { View } from 'react-native'
-import { useLocalSearchParams } from 'expo-router'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useTheme } from '@/lib/theme'
-import { Text } from '@/components/ui'
+import { PhotoCompareScreen } from '@/features/photos/PhotoCompareScreen'
 
-export default function PhotoCompareScreen() {
-	const { plantId } = useLocalSearchParams<{ plantId: string }>()
-	const { theme } = useTheme()
-	const insets = useSafeAreaInsets()
-
-	return (
-		<View
-			style={{
-				flex: 1,
-				backgroundColor: theme.colors.background,
-				paddingTop: insets.top,
-				padding: theme.spacing[4],
-			}}
-		>
-			<Text variant="largeTitle">Compare Photos</Text>
-			<Text variant="body" color={theme.colors.textSecondary}>
-				Plant #{plantId}
-			</Text>
-		</View>
-	)
-}
+export default PhotoCompareScreen

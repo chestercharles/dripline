@@ -107,4 +107,6 @@ export const darkColors = {
 	shadow: 'rgba(0, 0, 0, 0.3)',
 } as const
 
-export type Colors = typeof lightColors
+export type Colors = {
+	[K in keyof typeof lightColors]: string
+}

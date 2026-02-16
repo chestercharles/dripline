@@ -1,27 +1,3 @@
-import { View } from 'react-native'
-import { useLocalSearchParams } from 'expo-router'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useTheme } from '@/lib/theme'
-import { Text } from '@/components/ui'
+import { PhotoTimelineScreen } from '@/features/photos/PhotoTimelineScreen'
 
-export default function PhotoTimelineScreen() {
-	const { plantId } = useLocalSearchParams<{ plantId: string }>()
-	const { theme } = useTheme()
-	const insets = useSafeAreaInsets()
-
-	return (
-		<View
-			style={{
-				flex: 1,
-				backgroundColor: theme.colors.background,
-				paddingTop: insets.top,
-				padding: theme.spacing[4],
-			}}
-		>
-			<Text variant="largeTitle">Photos</Text>
-			<Text variant="body" color={theme.colors.textSecondary}>
-				Plant #{plantId}
-			</Text>
-		</View>
-	)
-}
+export default PhotoTimelineScreen

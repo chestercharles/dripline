@@ -1,25 +1,3 @@
-import { View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useTheme } from '@/lib/theme'
-import { Text } from '@/components/ui'
+import { YardMapScreen } from '@/features/yard-map'
 
-export default function YardMapScreen() {
-	const { theme } = useTheme()
-	const insets = useSafeAreaInsets()
-
-	return (
-		<View
-			style={{
-				flex: 1,
-				backgroundColor: theme.colors.background,
-				paddingTop: insets.top,
-				padding: theme.spacing[4],
-			}}
-		>
-			<Text variant="largeTitle">Yard Map</Text>
-			<Text variant="body" color={theme.colors.textSecondary}>
-				Your yard layout will appear here.
-			</Text>
-		</View>
-	)
-}
+export default YardMapScreen
