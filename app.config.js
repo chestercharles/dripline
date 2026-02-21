@@ -4,6 +4,12 @@ export default {
 		slug: 'dripline',
 		owner: 'chet-co',
 		version: '1.0.0',
+		runtimeVersion: {
+			policy: 'appVersion',
+		},
+		updates: {
+			url: 'https://u.expo.dev/db747518-585e-4fb4-b3fb-fd3a7610ae84',
+		},
 		orientation: 'portrait',
 		icon: './assets/icon.png',
 		userInterfaceStyle: 'automatic',

@@ -1,0 +1,123 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and submit to TestFlight
+    runs-on: ubuntu-latest
+    concurrency: mobile-build
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: 🔍 Check if version was bumped
+        id: check
+        run: |
+          OLD=$(git show HEAD^:package.json | jq -r '.version' || echo "null")
+          NEW=$(jq -r '.version' package.json || echo "null")
+          echo "Previous version: $OLD"
+          echo "Current version: $NEW"
+
+          if [ "$OLD" != "$NEW" ] && [ "$OLD" != "null" ] && [ "$NEW" != "null" ]; then
+            echo "Version bumped: $OLD → $NEW"
+            echo "bumped=true" >> $GITHUB_OUTPUT
+            echo "### Build - Version Bumped" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- Version: \`$OLD\` → \`$NEW\`" >> $GITHUB_STEP_SUMMARY
+            echo "- Building and submitting to TestFlight..." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Version unchanged: $NEW - skipping build"
+            echo "bumped=false" >> $GITHUB_OUTPUT
+            echo "### Build - Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- Version unchanged: \`$NEW\`" >> $GITHUB_STEP_SUMMARY
+            echo "- No build needed" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+
+      - name: 🏗 Setup Node
+        if: steps.check.outputs.bumped == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: 🏗 Setup EAS
+        if: steps.check.outputs.bumped == 'true'
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        if: steps.check.outputs.bumped == 'true'
+        run: npm ci
+
+      - name: 🚀 Build and submit to TestFlight
+        if: steps.check.outputs.bumped == 'true'
+        run: eas build -p ios --profile production --non-interactive --auto-submit
+
+  ota:
+    name: Push OTA update
+    runs-on: ubuntu-latest
+    concurrency: mobile-ota
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: 🔍 Check if version was bumped
+        id: version-check
+        run: |
+          OLD=$(git show HEAD^:package.json | jq -r '.version' || echo "null")
+          NEW=$(jq -r '.version' package.json || echo "null")
+          echo "Previous version: $OLD"
+          echo "Current version: $NEW"
+
+          if [ "$OLD" != "$NEW" ] && [ "$OLD" != "null" ] && [ "$NEW" != "null" ]; then
+            echo "Version bumped — skipping OTA, build job handles this"
+            echo "bumped=true" >> $GITHUB_OUTPUT
+            echo "### OTA - Skipped (Version Bumped)" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- Build job will handle this deployment" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          else
+            echo "Version unchanged — checking for native changes"
+            echo "bumped=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🏗 Setup Node
+        if: steps.version-check.outputs.bumped == 'false'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: 🏗 Setup EAS
+        if: steps.version-check.outputs.bumped == 'false'
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        if: steps.version-check.outputs.bumped == 'false'
+        run: npm ci
+
+      - name: 🔍 Check for native changes
+        if: steps.version-check.outputs.bumped == 'false'
+        run: node native-changes-check.js --range "HEAD^...HEAD"
+
+      - name: 🚀 Push OTA update
+        if: steps.version-check.outputs.bumped == 'false'
+        run: |
+          COMMIT_MSG=$(echo "${{ github.event.head_commit.message }}" | head -n 1)
+          eas update -p ios --channel production --non-interactive --message "Main - $COMMIT_MSG (commit: ${{ github.sha }})"
