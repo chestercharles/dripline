@@ -5,8 +5,10 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { ThemeProvider } from '@/lib/theme'
 import { DatabaseProvider } from '@/lib/db'
 import { queryClient } from '@/lib/query/client'
+import { useOTAUpdate } from '@/lib/updates/useOTAUpdate'
 
-export default function RootLayout() {
+function AppRoot() {
+	useOTAUpdate()
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
 			<ThemeProvider>
@@ -22,4 +24,8 @@ export default function RootLayout() {
 			</ThemeProvider>
 		</GestureHandlerRootView>
 	)
+}
+
+export default function RootLayout() {
+	return <AppRoot />
 }
