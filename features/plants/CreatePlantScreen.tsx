@@ -126,7 +126,28 @@ export function CreatePlantScreen() {
 		setPhotoUri(resized.uri)
 
 		if (apiKey) {
-			setStep('photo_review')
+			// Skip confirmation — start identifying immediately
+			setStep('identifying')
+			setStatusText('Identifying plant...')
+			statusTimerRef.current = setTimeout(() => {
+				setStatusText('Looking up care info...')
+			}, 2000)
+			try {
+				const id = await identifyPlant(resized.uri, aiProvider, apiKey)
+				if (statusTimerRef.current) clearTimeout(statusTimerRef.current)
+				setIdentification(id)
+				setName(id.name)
+				setSpecies(id.species)
+				setWateringNeeds(id.wateringFrequency ?? '')
+				setCareNotes(buildCareNotesString(id))
+				setSunExposure(id.sunExposure)
+				setStep('result')
+				Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+			} catch {
+				if (statusTimerRef.current) clearTimeout(statusTimerRef.current)
+				setIdentifyError('Could not identify plant — fill in the details manually.')
+				setStep('manual')
+			}
 		} else {
 			setStep('manual')
 		}
