@@ -2,6 +2,7 @@ export default {
 	expo: {
 		name: 'Dripline',
 		slug: 'dripline',
+		owner: 'chestercarmer',
 		version: '1.0.0',
 		orientation: 'portrait',
 		icon: './assets/icon.png',
@@ -10,7 +11,7 @@ export default {
 		splash: {
 			image: './assets/splash-icon.png',
 			resizeMode: 'contain',
-			backgroundColor: '#ffffff',
+			backgroundColor: '#0F2417',
 		},
 		ios: {
 			supportsTablet: true,
