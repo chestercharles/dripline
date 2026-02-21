@@ -71,6 +71,14 @@ export const plants = sqliteTable('plants', {
 	gridX: real('grid_x'),
 	gridY: real('grid_y'),
 	notes: text('notes'),
+	sunExposure: text('sun_exposure', {
+		enum: ['full_sun', 'partial_sun', 'partial_shade', 'full_shade'],
+	}),
+	wateringNeeds: text('watering_needs'),
+	soilType: text('soil_type'),
+	careNotes: text('care_notes'),
+	identifiedAt: text('identified_at'),
+	heroPhotoPath: text('hero_photo_path'),
 	createdAt: text('created_at')
 		.notNull()
 		.default(sql`(datetime('now'))`),

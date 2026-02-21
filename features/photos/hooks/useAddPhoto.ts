@@ -45,6 +45,9 @@ export function useAddPhoto() {
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.plants.detail(variables.plantId),
 			})
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.plants.all,
+			})
 		},
 	})
 }

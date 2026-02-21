@@ -4,6 +4,8 @@ import type { DripStatus } from '@/lib/constants/dripStatus'
 
 export type Plant = InferSelectModel<typeof plants>
 
+export type SunExposure = 'full_sun' | 'partial_sun' | 'partial_shade' | 'full_shade'
+
 export interface CreatePlantInput {
 	name: string
 	species?: string
@@ -13,6 +15,12 @@ export interface CreatePlantInput {
 	gridX?: number
 	gridY?: number
 	notes?: string
+	sunExposure?: SunExposure
+	wateringNeeds?: string
+	soilType?: string
+	careNotes?: string
+	identifiedAt?: string
+	heroPhotoPath?: string
 }
 
 export interface UpdatePlantInput {
@@ -24,6 +32,12 @@ export interface UpdatePlantInput {
 	gridX?: number
 	gridY?: number
 	notes?: string
+	sunExposure?: SunExposure
+	wateringNeeds?: string
+	soilType?: string
+	careNotes?: string
+	identifiedAt?: string
+	heroPhotoPath?: string
 }
 
 export interface PlantWithRelations extends Plant {

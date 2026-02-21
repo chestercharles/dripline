@@ -78,15 +78,6 @@ export default function TabLayout() {
 				}}
 			/>
 			<Tabs.Screen
-				name="map"
-				options={{
-					title: 'Yard',
-					tabBarIcon: ({ color, size }) => (
-						<MapIcon color={color} size={size} />
-					),
-				}}
-			/>
-			<Tabs.Screen
 				name="plants"
 				options={{
 					title: 'Plants',
@@ -102,6 +93,12 @@ export default function TabLayout() {
 					tabBarIcon: ({ color, size }) => (
 						<SettingsIcon color={color} size={size} />
 					),
+				}}
+			/>
+			<Tabs.Screen
+				name="map"
+				options={{
+					href: null,
 				}}
 			/>
 		</Tabs>

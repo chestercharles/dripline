@@ -1,2 +1,3 @@
 export { analyzePlantHealth } from './analyze'
-export type { AIProvider, AIAnalysisResult, AIRequestConfig } from './types'
+export { identifyPlant } from './identify'
+export type { AIProvider, AIAnalysisResult, AIRequestConfig, PlantIdentification } from './types'

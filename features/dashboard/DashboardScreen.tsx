@@ -8,6 +8,7 @@ import { useSetting } from '@/features/settings/hooks'
 import { DEFAULT_LOCATION } from '@/lib/constants/zones'
 import { useWeather } from './hooks'
 import { WeatherCard } from './WeatherCard'
+import { GardenSummaryCard } from './GardenSummaryCard'
 import { IrrigationAlertsCard } from './IrrigationAlertsCard'
 import { SeasonalTipsCard } from './SeasonalTipsCard'
 import { RecentActivityCard } from './RecentActivityCard'
@@ -48,6 +49,7 @@ export function DashboardScreen() {
 				{locationName ?? DEFAULT_LOCATION.name}
 			</Text>
 			<WeatherCard />
+			<GardenSummaryCard />
 			<IrrigationAlertsCard />
 			<SeasonalTipsCard />
 			<RecentActivityCard />

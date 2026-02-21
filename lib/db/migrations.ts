@@ -74,6 +74,17 @@ const MIGRATIONS = [
 			);
 		`,
 	},
+	{
+		version: 2,
+		up: `
+			ALTER TABLE plants ADD COLUMN sun_exposure TEXT CHECK(sun_exposure IN ('full_sun','partial_sun','partial_shade','full_shade'));
+			ALTER TABLE plants ADD COLUMN watering_needs TEXT;
+			ALTER TABLE plants ADD COLUMN soil_type TEXT;
+			ALTER TABLE plants ADD COLUMN care_notes TEXT;
+			ALTER TABLE plants ADD COLUMN identified_at TEXT;
+			ALTER TABLE plants ADD COLUMN hero_photo_path TEXT;
+		`,
+	},
 ]
 
 export async function runMigrations(db: SQLiteDatabase) {
