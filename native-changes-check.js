@@ -28,7 +28,6 @@ const HIGH_SIGNAL = [
 	'app.config.ts',
 	'app.config.json',
 	'app.json',
-	'eas.json',
 ]
 const NATIVE_DEP_HINTS = [
 	/^react-native($|[-/])/,

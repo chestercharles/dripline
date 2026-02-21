@@ -1,12 +1,12 @@
-export default {
+const { version } = require('./package.json')
+
+module.exports = {
 	expo: {
 		name: 'Dripline',
 		slug: 'dripline',
 		owner: 'chet-co',
-		version: '1.0.1',
-		runtimeVersion: {
-			policy: 'appVersion',
-		},
+		version,
+		runtimeVersion: version,
 		updates: {
 			url: 'https://u.expo.dev/db747518-585e-4fb4-b3fb-fd3a7610ae84',
 		},
