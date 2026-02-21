@@ -287,6 +287,22 @@ export function PlantDetailScreen() {
 									🤖 AI identified
 								</Text>
 							)}
+							{plant.location && (
+								<View
+									style={{
+										alignSelf: 'flex-start',
+										backgroundColor: theme.colors.surfaceElevated,
+										paddingHorizontal: theme.spacing[2],
+										paddingVertical: 2,
+										borderRadius: theme.shape.radius.full,
+										marginTop: theme.spacing[1],
+									}}
+								>
+									<Text variant="caption1" color={theme.colors.textSecondary}>
+										{plant.location}
+									</Text>
+								</View>
+							)}
 						</View>
 
 						<Pressable

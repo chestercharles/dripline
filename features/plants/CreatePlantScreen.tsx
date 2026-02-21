@@ -88,6 +88,9 @@ export function CreatePlantScreen() {
 		useState<PlantIdentification['sunExposure']>('full_sun')
 	const [dripStatus, setDripStatus] = useState<DripStatus>('working')
 	const [notes, setNotes] = useState('')
+	const [location, setLocation] = useState<string | null>(null)
+	const [customLocation, setCustomLocation] = useState('')
+	const [showCustomLocation, setShowCustomLocation] = useState(false)
 
 	const statusTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 	// useApiKey loads async from SecureStore — keep a ref so openCamera
@@ -218,6 +221,7 @@ export function CreatePlantScreen() {
 				careNotes: buildCareNotesString(identification) || undefined,
 				identifiedAt: new Date().toISOString(),
 				heroPhotoPath: photoUri ?? undefined,
+				location: location ?? undefined,
 			})
 		} else {
 			await createPlant.mutateAsync({
@@ -231,6 +235,7 @@ export function CreatePlantScreen() {
 				careNotes: careNotes.trim() || undefined,
 				identifiedAt: undefined,
 				heroPhotoPath: photoUri ?? undefined,
+				location: location ?? undefined,
 			})
 		}
 
@@ -478,6 +483,24 @@ export function CreatePlantScreen() {
 							emoji="📝"
 							label="Care notes"
 							value={identification.careNotes}
+						/>
+
+						<LocationPicker
+							value={location}
+							customValue={customLocation}
+							showCustom={showCustomLocation}
+							onSelect={(val) => {
+								setLocation(val)
+								setShowCustomLocation(false)
+							}}
+							onOther={() => {
+								setShowCustomLocation(true)
+								setLocation(null)
+							}}
+							onCustomChange={(val) => {
+								setCustomLocation(val)
+								setLocation(val || null)
+							}}
 						/>
 					</View>
 				</ScrollView>
@@ -742,6 +765,24 @@ export function CreatePlantScreen() {
 						style={{ minHeight: 80, textAlignVertical: 'top' }}
 					/>
 
+					<LocationPicker
+						value={location}
+						customValue={customLocation}
+						showCustom={showCustomLocation}
+						onSelect={(val) => {
+							setLocation(val)
+							setShowCustomLocation(false)
+						}}
+						onOther={() => {
+							setShowCustomLocation(true)
+							setLocation(null)
+						}}
+						onCustomChange={(val) => {
+							setCustomLocation(val)
+							setLocation(val || null)
+						}}
+					/>
+
 					<Button
 						title="Save Plant"
 						onPress={handleSave}
@@ -814,6 +855,106 @@ function Chip({
 			<Text variant="caption1" color={textColor} style={{ fontWeight: '600' }}>
 				{label}
 			</Text>
+		</View>
+	)
+}
+
+const LOCATION_OPTIONS = [
+	'Front Yard',
+	'Back Yard',
+	'Side Yard',
+	'Entryway',
+	'Front Patio',
+	'Back Patio',
+	'Driveway',
+	'Rooftop',
+] as const
+
+function LocationPicker({
+	value,
+	customValue,
+	showCustom,
+	onSelect,
+	onOther,
+	onCustomChange,
+}: {
+	value: string | null
+	customValue: string
+	showCustom: boolean
+	onSelect: (val: string) => void
+	onOther: () => void
+	onCustomChange: (val: string) => void
+}) {
+	const { theme } = useTheme()
+	return (
+		<View style={{ gap: theme.spacing[2] }}>
+			<Text variant="subheadline" color={theme.colors.textSecondary}>
+				Location
+			</Text>
+			<View
+				style={{
+					flexDirection: 'row',
+					flexWrap: 'wrap',
+					gap: theme.spacing[2],
+				}}
+			>
+				{LOCATION_OPTIONS.map((opt) => (
+					<Pressable
+						key={opt}
+						onPress={() => onSelect(opt)}
+						style={{
+							paddingHorizontal: theme.spacing[3],
+							paddingVertical: theme.spacing[2],
+							borderRadius: theme.shape.radius.full,
+							backgroundColor:
+								value === opt
+									? theme.colors.accent
+									: theme.colors.surfaceSecondary,
+						}}
+					>
+						<Text
+							variant="caption1"
+							color={
+								value === opt
+									? theme.colors.textInverse
+									: theme.colors.text
+							}
+						>
+							{opt}
+						</Text>
+					</Pressable>
+				))}
+				<Pressable
+					onPress={onOther}
+					style={{
+						paddingHorizontal: theme.spacing[3],
+						paddingVertical: theme.spacing[2],
+						borderRadius: theme.shape.radius.full,
+						backgroundColor:
+							showCustom
+								? theme.colors.accent
+								: theme.colors.surfaceSecondary,
+					}}
+				>
+					<Text
+						variant="caption1"
+						color={
+							showCustom
+								? theme.colors.textInverse
+								: theme.colors.text
+						}
+					>
+						Other
+					</Text>
+				</Pressable>
+			</View>
+			{showCustom && (
+				<TextInput
+					placeholder="e.g. Pool area"
+					value={customValue}
+					onChangeText={onCustomChange}
+				/>
+			)}
 		</View>
 	)
 }

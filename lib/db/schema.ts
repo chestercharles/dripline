@@ -79,6 +79,7 @@ export const plants = sqliteTable('plants', {
 	careNotes: text('care_notes'),
 	identifiedAt: text('identified_at'),
 	heroPhotoPath: text('hero_photo_path'),
+	location: text('location'),
 	createdAt: text('created_at')
 		.notNull()
 		.default(sql`(datetime('now'))`),

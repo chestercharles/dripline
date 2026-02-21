@@ -86,6 +86,21 @@ export function PlantListScreen() {
 							{item.species}
 						</Text>
 					) : null}
+					{item.location ? (
+						<View
+							style={{
+								alignSelf: 'flex-start',
+								backgroundColor: theme.colors.surfaceElevated,
+								paddingHorizontal: theme.spacing[2],
+								paddingVertical: 2,
+								borderRadius: theme.shape.radius.full,
+							}}
+						>
+							<Text variant="caption1" color={theme.colors.textSecondary}>
+								{item.location}
+							</Text>
+						</View>
+					) : null}
 					{item.latestPhoto ? (
 						<Text variant="caption1" color={theme.colors.textTertiary}>
 							📷 {formatPhotoAge(item.latestPhoto.takenAt)}

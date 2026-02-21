@@ -85,6 +85,12 @@ const MIGRATIONS = [
 			ALTER TABLE plants ADD COLUMN hero_photo_path TEXT;
 		`,
 	},
+	{
+		version: 3,
+		up: `
+			ALTER TABLE plants ADD COLUMN location TEXT;
+		`,
+	},
 ]
 
 export async function runMigrations(db: SQLiteDatabase) {

@@ -21,6 +21,7 @@ export interface CreatePlantInput {
 	careNotes?: string
 	identifiedAt?: string
 	heroPhotoPath?: string
+	location?: string
 }
 
 export interface UpdatePlantInput {
@@ -38,6 +39,7 @@ export interface UpdatePlantInput {
 	careNotes?: string
 	identifiedAt?: string
 	heroPhotoPath?: string
+	location?: string
 }
 
 export interface PlantWithRelations extends Plant {
