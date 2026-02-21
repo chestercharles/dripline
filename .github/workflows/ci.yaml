@@ -28,3 +28,20 @@ jobs:
 
       - name: 🔍 Lint
         run: npx expo lint
+
+  native-check:
+    name: Native changes gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 🔍 Check native changes require version bump
+        run: node native-changes-check.js --range "HEAD^...HEAD"
