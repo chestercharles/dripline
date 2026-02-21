@@ -2,7 +2,7 @@ export default {
 	expo: {
 		name: 'Dripline',
 		slug: 'dripline',
-		owner: 'chestercarmer',
+		owner: 'chet-co',
 		version: '1.0.0',
 		orientation: 'portrait',
 		icon: './assets/icon.png',
