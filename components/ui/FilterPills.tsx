@@ -21,7 +21,8 @@ export function FilterPills<T extends string>({
 		<ScrollView
 			horizontal
 			showsHorizontalScrollIndicator={false}
-			contentContainerStyle={{ gap: spacing[2], paddingHorizontal: spacing[4] }}
+			style={{ flexGrow: 0, flexShrink: 0, paddingBottom: spacing[2] }}
+			contentContainerStyle={{ gap: spacing[2], paddingHorizontal: spacing[4], alignItems: 'center' }}
 		>
 			{options.map((option) => {
 				const isActive = option.value === selected
