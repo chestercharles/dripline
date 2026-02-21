@@ -37,7 +37,7 @@ async function identifyWithOpenAI(
 					],
 				},
 			],
-			max_tokens: 512,
+			max_tokens: 1024,
 		}),
 	})
 
@@ -64,7 +64,7 @@ async function identifyWithAnthropic(
 		},
 		body: JSON.stringify({
 			model: 'claude-opus-4-6',
-			max_tokens: 512,
+			max_tokens: 1024,
 			system: buildIdentificationPrompt(),
 			messages: [
 				{
