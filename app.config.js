@@ -16,6 +16,7 @@ export default {
 		ios: {
 			supportsTablet: true,
 			bundleIdentifier: 'com.dripline.app',
+			appleTeamId: 'JV7963MV4V',
 			infoPlist: {
 				ITSAppUsesNonExemptEncryption: false,
 			},
