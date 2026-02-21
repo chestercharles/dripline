@@ -90,6 +90,14 @@ export function CreatePlantScreen() {
 	const [notes, setNotes] = useState('')
 
 	const statusTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+	// useApiKey loads async from SecureStore — keep a ref so openCamera
+	// always sees the latest value even when called from the mount effect
+	const apiKeyRef = useRef(apiKey)
+	const aiProviderRef = useRef(aiProvider)
+	useEffect(() => {
+		apiKeyRef.current = apiKey
+		aiProviderRef.current = aiProvider
+	}, [apiKey, aiProvider])
 
 	useEffect(() => {
 		openCamera()
@@ -125,7 +133,9 @@ export function CreatePlantScreen() {
 
 		setPhotoUri(resized.uri)
 
-		if (apiKey) {
+		const currentKey = apiKeyRef.current
+		const currentProvider = aiProviderRef.current
+		if (currentKey) {
 			// Skip confirmation — start identifying immediately
 			setStep('identifying')
 			setStatusText('Identifying plant...')
@@ -133,7 +143,7 @@ export function CreatePlantScreen() {
 				setStatusText('Looking up care info...')
 			}, 2000)
 			try {
-				const id = await identifyPlant(resized.uri, aiProvider, apiKey)
+				const id = await identifyPlant(resized.uri, currentProvider, currentKey)
 				if (statusTimerRef.current) clearTimeout(statusTimerRef.current)
 				setIdentification(id)
 				setName(id.name)
